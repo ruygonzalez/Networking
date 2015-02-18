@@ -71,7 +71,7 @@
 
 <pre class="prettyprint code">CS2Net::Socket sock;
 std::string hostname("foo.example.net");
-uint16_t port = 42000;
+uint16_t port = 47000;
 
 int ret = sock.Connect(&amp;hostname, port);
 if(ret &lt; 0)
@@ -256,9 +256,9 @@ Ask a TA if you need help retrieving these packages, or if these packages appear
 
 <p>We suggest that you outline each task before actually trying to write code. You do not need to submit your outlines, but writing them up will help you better understand what you will need to do.</p>
 
-<p><div class="points easy">5</div>The simplest possible client that does anything meaningful is one that connects to a server, sends one message, receives one message, and then promptly disconnects. Write a program that does this. Specifically, you should connect to <span class="code">halo.cms.caltech.edu</span>, port 42000, and send a single message of your choice. You should then retrieve and display the reply on the command line. Do all this in the files <span class="code">src/client0.h</span> and <span class="code">src/client0.cpp</span>. You may assume that all messages will be less than 1024 bytes in length.</p>
+<p><div class="points easy">5</div>The simplest possible client that does anything meaningful is one that connects to a server, sends one message, receives one message, and then promptly disconnects. Write a program that does this. Specifically, you should connect to <span class="code">halo.cms.caltech.edu</span>, port 47000, and send a single message of your choice. You should then retrieve and display the reply on the command line. Do all this in the files <span class="code">src/client0.h</span> and <span class="code">src/client0.cpp</span>. You may assume that all messages will be less than 1024 bytes in length.</p>
 
-<p><div class="points easy">4</div>On its own, though, such a client can't do much. We want to be able to send multiple messages over the lifetime of a connection. Crucially, we also want to respond to incoming messages as they come in without having to wait forever for them. In the files <span class="code">src/client1.h</span> and <span class="code">src/client1.cpp</span>, write a client program that sends a message to a remote server <span class="hilite">not more than once per second</span>, while displaying any incoming messages immediately as they arrive. You may assume that all messages will be less than 1024 bytes in length, and you should not send messages longer than that (as they may be truncated by the remote server). For this portion, you should connect to <span class="code">halo.cms.caltech.edu</span>, port 42001.</p>
+<p><div class="points easy">4</div>On its own, though, such a client can't do much. We want to be able to send multiple messages over the lifetime of a connection. Crucially, we also want to respond to incoming messages as they come in without having to wait forever for them. In the files <span class="code">src/client1.h</span> and <span class="code">src/client1.cpp</span>, write a client program that sends a message to a remote server <span class="hilite">not more than once per second</span>, while displaying any incoming messages immediately as they arrive. You may assume that all messages will be less than 1024 bytes in length, and you should not send messages longer than that (as they may be truncated by the remote server). For this portion, you should connect to <span class="code">halo.cms.caltech.edu</span>, port 47001.</p>
 
 <p>For rate-limiting, you can use <span class="code">sleep()</span> or <span class="code">usleep()</span> (both defined in <span class="code">unistd.h</span>) or a similar mechanism. You should not test your code without at least attempting to perform rate-limiting. Keep in mind as well that whatever you send to the server will be rebroadcasted to every connected client.</p>
 
@@ -307,7 +307,7 @@ Ask a TA if you need help retrieving these packages, or if these packages appear
 <li><span class="code">ProcessChatLine()</span> needs to send chat messages over the network instead of echoing input to the chat buffer.</li>
 </ul>
 
-<p>You can test your chat client by connecting to <span class="code">halo.cms.caltech.edu</span>, port 42002.</p>
+<p>You can test your chat client by connecting to <span class="code">halo.cms.caltech.edu</span>, port 47002.</p>
 
 <h3>Part 3: Some Server-Side Code</h3>
 
