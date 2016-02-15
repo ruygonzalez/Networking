@@ -56,7 +56,7 @@ server1 : $(addprefix $(OBJDIR)/,$(SERVER1_OBJS))
 server2 : $(addprefix $(OBJDIR)/,$(SERVER2_OBJS))
 	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
 
-testsuite: $(SRCDIR)/client2.h $(addprefix $(OBJDIR)/, $(TESTSUITE_OBJS))
+testsuite: $(SRCDIR)/client2.hpp $(addprefix $(OBJDIR)/, $(TESTSUITE_OBJS))
 	$(LD) -o $(BINDIR)/$@ $(addprefix $(OBJDIR)/, $(TESTSUITE_OBJS))  $(LDFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/$(notdir %.cpp)

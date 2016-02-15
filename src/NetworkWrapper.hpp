@@ -14,13 +14,13 @@ Copyright (c) 2012-2013 California Institute of Technology.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met: 
+modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer. 
+   list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution. 
+   and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -34,7 +34,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The views and conclusions contained in the software and documentation are those
-of the authors and should not be interpreted as representing official policies, 
+of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the California Institute of Technology.
 
 */
@@ -58,7 +58,7 @@ either expressed or implied, of the California Institute of Technology.
 #include <poll.h>
 #include <errno.h>
 
-#include "error.h"
+#include "error.hpp"
 
 namespace CS2Net
 {
@@ -71,58 +71,58 @@ namespace CS2Net
         SOCKETSTATE_SSL,
         SOCKETSTATE_BADSTATE,
     };
-    
+
     class Socket
     {
-    
+
     private:
         int fd;
         SocketState state;
-    
+
     public:
         Socket();
         Socket(int sock_fd, SocketState sock_state_override = SOCKETSTATE_CONNECTED);
-        
+
         ~Socket();
-    
+
         int Connect(std::string * hostname, uint16_t port);
         int Disconnect();
-    
+
         int Send(std::string * to_send);
         std::string * Recv(size_t length, bool block_while_buffer);
-        
+
         std::string * GetRemoteAddr();
-        
+
         int Bind(uint16_t port, int backlog);
         Socket * Accept();
-        
+
         int GetSocketFileDescriptor() { return fd; }
-        
+
     };
-    
+
     /** @brief A wrapping class around a Socket object used for the Poll function.
-     * 
+     *
      */
     struct PollFD
     {
         Socket * sock;          //! a Socket object to poll
         short requested_events; //! a bitfield designating which events to request
         short returned_events;  //! a bitfield containing the results of a Poll() call
-        
+
         PollFD()
         {
             this->sock = NULL;
             this->requested_events = 0;
             this->returned_events = 0;
         }
-        
+
         PollFD(Socket * sock, short requested_events)
         {
             this->sock = sock;
             this->requested_events = requested_events;
             this->returned_events = 0;
         }
-        
+
         void SetRead(bool r)
         {
             if(r)
@@ -176,11 +176,11 @@ namespace CS2Net
         {
             return (this->returned_events & POLLHUP);
         }
-        
+
     };
-    
+
     int Poll(std::vector<PollFD> * to_poll, int timeout_ms);
-    
+
 }
 
 #endif
