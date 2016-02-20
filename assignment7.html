@@ -312,7 +312,7 @@ if(ret &lt; 0)
 // ... connect socket ...
 
 std::vector&lt;CS2Net::PollFD&gt; poll_vec(1);
-poll_vec[0].sock = sock;
+poll_vec[0].sock = &sock;
 poll_vec[0].SetRead(true);
 // now do the poll (10 ms timeout)
 int poll_err = CS2Net::Poll(&amp;poll_vec, 10);
