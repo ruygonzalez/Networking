@@ -54,7 +54,7 @@ either expressed or implied, of the California Institute of Technology.
 
 /* TODO: declare any extra classes here */
 
-// Function is declared here for unit test purposes and to prevent the additon
+// Function is declared here for unit test purposes and to prevent the addition
 // of a whole new source file.
 /**
  * @brief Creates and returns an encoded network message.
