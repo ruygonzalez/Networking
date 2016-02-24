@@ -63,7 +63,7 @@ $(OBJDIR)/%.o : $(SRCDIR)/$(notdir %.cpp)
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@ 
 
 clean:
-	rm $(addprefix $(BINDIR)/,$(BINS)) $(OBJDIR)/*.o
+	rm -f $(addprefix $(BINDIR)/,$(BINS)) $(OBJDIR)/*.o
 
 clean-docs:
 	rm -r $(DOCDIR)/*
