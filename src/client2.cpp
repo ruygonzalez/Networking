@@ -47,7 +47,7 @@ static void AddLineToBuffer(gpointer);
 static void ProcessChatLine(GtkWidget *, gpointer);
 static void SetUserList(std::list<std::string> *);
 static int DoConnect(const char *, uint16_t, const char *);
-static int DoDisconnect(void);
+static void DoDisconnect(void);
 static void ShowConnectDialog(GtkWidget *, gpointer);
 static void DisconnectCallback(GtkWidget *, gpointer);
 static void destroy(GtkWidget *, gpointer);
@@ -112,7 +112,7 @@ static int DoConnect(const char * hostname, uint16_t port, const char * username
 /**
  * @brief Disconnects an open connection.
  */
-static int DoDisconnect()
+static void DoDisconnect()
 {
     sock->Disconnect();
     connected = false;

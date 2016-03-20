@@ -323,12 +323,12 @@ int CS2Net::Socket::Send(std::string * to_send)
     sent = ::send(this->fd, to_send->data(), to_send->length(), 0);
 
     // Print obvious errors.
-    if(sent == -1)
+    if (sent < 0)
     {
         ERROR("Error on Send(): %s", strerror(errno));
     }
     // Catch not-so-obvious errors.
-    else if(sent < to_send->length())
+    else if ((size_t) sent < to_send->length())
     {
         WARN("Send() reports partial send (%d of %d bytes). %s", sent, to_send->length(), strerror(errno));
     }
@@ -394,13 +394,13 @@ std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
     ssize_t rcvd = ::recv(this->fd, (void *)buf, length, flags);
 
     // Print obvious errors.
-    if(rcvd == -1)
+    if (rcvd < 0)
     {
         __errno = errno;
         ERROR("Error on Recv(): %s", strerror(errno));
     }
     // Catch not-so-obvious errors.
-    else if(rcvd < length && errno != 0)
+    else if ((size_t) rcvd < length && errno != 0)
     {
         __errno = errno;
         WARN("Recv() received fewer bytes than requested: %s", strerror(errno));
@@ -412,7 +412,7 @@ std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
 
     // Construct a string for all the received data (if any)
     std::string * to_return = NULL;
-    if(rcvd >= 0)
+    if (rcvd >= 0)
     {
         to_return = new std::string(buf, rcvd);
     }
@@ -665,7 +665,8 @@ std::string * CS2Net::Socket::GetRemoteAddr()
  */
 int CS2Net::Poll(std::vector<PollFD> * to_poll, int timeout_ms)
 {
-    int err, __errno, i;
+    int err, __errno;
+    unsigned int i;
 
     // Translate all of the vector elements into an array of the appropriate type
     // this operation does not change the order of elements; will be important later

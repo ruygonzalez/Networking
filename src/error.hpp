@@ -2,13 +2,13 @@
 * @file error.hpp
 * @author Ben Yuan <<byuan@caltech.edu>>
 * @version 1.0
-* @date 2012-2013
+* @date 2012-2014
 * @copyright see License section
 *
 * @brief Defines error printing features.
 *
 * @section License
-* Copyright (c) 2012-2013 California Institute of Technology.
+* Copyright (c) 2012-2014 California Institute of Technology.
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -65,42 +65,42 @@ inline void printf_error(const char * file, int lineno, int level, const char * 
 }
 
 #if ERRORLEVEL >= ERR_FATAL
-#define FATAL(args...) printf_error(__FILE__, __LINE__, ERR_FATAL, args)
+#define FATAL(...) printf_error(__FILE__, __LINE__, ERR_FATAL, __VA_ARGS__)
 #define VFATAL(msg, file, line, fmtargs) vprintf_error(file, line, ERR_FATAL, msg, fmtargs)
 #else
-#define FATAL(args...)
+#define FATAL(...)
 #define VFATAL(msg, file, line, fmtargs)
 #endif
 
 #if ERRORLEVEL >= ERR_ERROR
-#define ERROR(args...) printf_error(__FILE__, __LINE__, ERR_ERROR, args)
+#define ERROR(...) printf_error(__FILE__, __LINE__, ERR_ERROR, __VA_ARGS__)
 #define VERROR(msg, file, line, fmtargs) vprintf_error(file, line, ERR_ERROR, msg, fmtargs)
 #else
-#define ERROR(args...)
+#define ERROR(...)
 #define VERROR(msg, file, line, fmtargs)
 #endif
 
 #if ERRORLEVEL >= ERR_WARN
-#define WARN(args...) printf_error(__FILE__, __LINE__, ERR_WARN, args)
+#define WARN(...) printf_error(__FILE__, __LINE__, ERR_WARN, __VA_ARGS__)
 #define VWARN(msg, file, line, fmtargs) vprintf_error(file, line, ERR_WARN, msg, fmtargs)
 #else
-#define WARN(args...)
+#define WARN(...)
 #define VWARN(msg, file, line, fmtargs)
 #endif
 
 #if ERRORLEVEL >= ERR_INFO
-#define INFO(args...) printf_error(__FILE__, __LINE__, ERR_INFO, args)
+#define INFO(...) printf_error(__FILE__, __LINE__, ERR_INFO, __VA_ARGS__)
 #define VINFO(msg, file, line, fmtargs) vprintf_error(file, line, ERR_INFO, msg, fmtargs)
 #else
-#define INFO(args...)
+#define INFO(...)
 #define VINFO(msg, file, line, fmtargs)
 #endif
 
 #if ERRORLEVEL >= ERR_DEBUG
-#define DEBUG(args...) printf_error(__FILE__, __LINE__, ERR_DEBUG, args)
+#define DEBUG(...) printf_error(__FILE__, __LINE__, ERR_DEBUG, __VA_ARGS__)
 #define VDEBUG(msg, file, line, fmtargs) vprintf_error(file, line, ERR_DEBUG, msg, fmtargs)
 #else
-#define DEBUG(args...)
+#define DEBUG(...)
 #define VDEBUG(msg, file, line, fmtargs)
 #endif
 
@@ -181,8 +181,8 @@ inline bool __PREFER(bool stmt, const char * file, int line, const char * msg, .
     return stmt;
 }
 
-#define REQUIRE(stmt, args...) __REQUIRE(stmt, __FILE__, __LINE__, args)
-#define ASSERT(stmt, args...) __ASSERT(stmt, __FILE__, __LINE__, args)
-#define PREFER(stmt, args...) __PREFER(stmt, __FILE__, __LINE__, args)
+#define REQUIRE(stmt, ...) __REQUIRE(stmt, __FILE__, __LINE__, __VA_ARGS__)
+#define ASSERT(stmt, ...) __ASSERT(stmt, __FILE__, __LINE__, __VA_ARGS__)
+#define PREFER(stmt, ...) __PREFER(stmt, __FILE__, __LINE__, __VA_ARGS__)
 
 #endif

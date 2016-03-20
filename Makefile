@@ -8,10 +8,10 @@ DOCDIR = doc
 CC = g++
 LD = g++
 DOCGEN = doxygen
-CFLAGS = 
-CPPFLAGS = -std=c++0x -I$(SRCDIR) `pkg-config --cflags gtk+-2.0` -g
+CFLAGS =
+CPPFLAGS = -std=c++11 -Wall -pedantic -I$(SRCDIR) `pkg-config --cflags gtk+-2.0` -g
 LDFLAGS = `pkg-config --libs gtk+-2.0`
-DOCGENFLAGS = 
+DOCGENFLAGS =
 COMMON_SRCS = NetworkWrapper.cpp error.cpp
 CLIENT0_SRCS = client0.cpp
 SERVER0_SRCS = server0.cpp
@@ -39,19 +39,19 @@ docs :
 	$(DOCGEN) $(DOCGENFLAGS)
 
 client0 : $(addprefix $(OBJDIR)/,$(CLIENT0_OBJS))
-	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS) 
+	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
 
 client1 : $(addprefix $(OBJDIR)/,$(CLIENT1_OBJS))
-	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS) 
+	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
 
 client2 : $(addprefix $(OBJDIR)/,$(CLIENT2_OBJS))
-	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS) 
-	
+	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
+
 server0 : $(addprefix $(OBJDIR)/,$(SERVER0_OBJS))
-	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS) 
-	
+	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
+
 server1 : $(addprefix $(OBJDIR)/,$(SERVER1_OBJS))
-	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS) 
+	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
 
 server2 : $(addprefix $(OBJDIR)/,$(SERVER2_OBJS))
 	$(LD) -o $(BINDIR)/$@ $^ $(LDFLAGS)
@@ -60,7 +60,7 @@ testsuite: $(SRCDIR)/client2.hpp $(addprefix $(OBJDIR)/, $(TESTSUITE_OBJS))
 	$(LD) -o $(BINDIR)/$@ $(addprefix $(OBJDIR)/, $(TESTSUITE_OBJS))  $(LDFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/$(notdir %.cpp)
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@ 
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 clean:
 	rm -f $(addprefix $(BINDIR)/,$(BINS)) $(OBJDIR)/*.o
