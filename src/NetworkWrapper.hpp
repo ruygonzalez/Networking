@@ -111,7 +111,7 @@ namespace CS2Net
 
         PollFD()
         {
-            this->sock = NULL;
+            this->sock = nullptr;
             this->requested_events = 0;
             this->returned_events = 0;
         }

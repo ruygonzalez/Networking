@@ -178,7 +178,7 @@ int CS2Net::Socket::Connect(std::string * hostname, uint16_t port)
 
     // Now we have a list of addrinfo structs that we can try to connect() to.
     // For each of them...
-    for (rp = result; rp != NULL; rp = rp->ai_next)
+    for (rp = result; rp != nullptr; rp = rp->ai_next)
     {
         // First, we try to generate a socket of the specified type
         sfd = ::socket(rp->ai_family, rp->ai_socktype,
@@ -353,7 +353,7 @@ int CS2Net::Socket::Send(std::string * to_send)
  * @param[in] length the amount of data requested.
  * @param[in] block_while_buffer whether or not to wait for all requested data.
  *
- * @return a new std::string with the requested data, or NULL (and set errno) on error.
+ * @return a new std::string with the requested data, or nullptr (and set errno) on error.
  *
  */
 std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
@@ -365,7 +365,7 @@ std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
     {
         ERROR("Cannot invoke Recv() on a disconnected socket!");
         errno = ENOTCONN;
-        return NULL;
+        return nullptr;
     }
 
     // There is no point in recving on a socket in a bad state.
@@ -373,7 +373,7 @@ std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
     {
         ERROR("Cannot invoke Recv() on a socket in bad state!");
         errno = EOPNOTSUPP;
-        return NULL;
+        return nullptr;
     }
 
     // There is no point in recving on a listener socket.
@@ -381,7 +381,7 @@ std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
     {
         ERROR("Cannot invoke Recv() on a listener socket!");
         errno = EOPNOTSUPP;
-        return NULL;
+        return nullptr;
     }
 
     // Let's set up our recv() flags
@@ -411,7 +411,7 @@ std::string * CS2Net::Socket::Recv(size_t length, bool block_while_buffer)
     }
 
     // Construct a string for all the received data (if any)
-    std::string * to_return = NULL;
+    std::string * to_return = nullptr;
     if (rcvd >= 0)
     {
         to_return = new std::string(buf, rcvd);
@@ -458,9 +458,9 @@ int CS2Net::Socket::Bind(uint16_t port, int backlog)
     hints.ai_socktype = SOCK_STREAM;    /* STREAM socket */
     hints.ai_flags = AI_PASSIVE;        /* For wildcard IP address */
     hints.ai_protocol = 0;              /* Any protocol */
-    hints.ai_canonname = NULL;
-    hints.ai_addr = NULL;
-    hints.ai_next = NULL;
+    hints.ai_canonname = nullptr;
+    hints.ai_addr = nullptr;
+    hints.ai_next = nullptr;
 
     // getaddrinfo() wants the port number as a string (const char *) for whatever reason.
     char port_str[8];
@@ -469,7 +469,7 @@ int CS2Net::Socket::Bind(uint16_t port, int backlog)
     DEBUG("port: %s", port_str);
 
     // Let's get ourselves some addrinfo.
-    s = getaddrinfo(NULL, port_str, &hints, &result);
+    s = getaddrinfo(nullptr, port_str, &hints, &result);
     if(s != 0)
     {
         // If we couldn't get some addrinfo, tell us why and then error out.
@@ -480,7 +480,7 @@ int CS2Net::Socket::Bind(uint16_t port, int backlog)
 
     // Now we have a list of addrinfo structs that we can try to connect() to.
     // For each of them...
-    for (rp = result; rp != NULL; rp = rp->ai_next)
+    for (rp = result; rp != nullptr; rp = rp->ai_next)
     {
         // First, we try to generate a socket of the specified type
         sfd = ::socket(rp->ai_family, rp->ai_socktype,
@@ -557,7 +557,7 @@ int CS2Net::Socket::Bind(uint16_t port, int backlog)
  * This function blocks until an incoming connection is received.
  * Use Poll() to determine whether a connection is waiting to be accepted.
  *
- * @return a new socket object, or NULL (and errno set) on error.
+ * @return a new socket object, or nullptr (and errno set) on error.
  *
  */
 CS2Net::Socket * CS2Net::Socket::Accept()
@@ -568,13 +568,13 @@ CS2Net::Socket * CS2Net::Socket::Accept()
     {
         ERROR("Attempted to accept() on a nonlistener socket!");
         errno = EOPNOTSUPP;
-        return NULL;
+        return nullptr;
     }
 
     int incoming_fd;
 
     // Try to accept a connection.
-    incoming_fd = ::accept(this->fd, NULL, NULL);
+    incoming_fd = ::accept(this->fd, nullptr, nullptr);
 
     // Did we accept a connection?
     if(incoming_fd == -1)
@@ -582,7 +582,7 @@ CS2Net::Socket * CS2Net::Socket::Accept()
         _errno = errno;
         ERROR("Failed to accept connection: %s", strerror(errno));
         errno = _errno;
-        return NULL;
+        return nullptr;
     }
 
     // We have accepted a connection. Wrap it in a socket and return
@@ -595,7 +595,7 @@ CS2Net::Socket * CS2Net::Socket::Accept()
  * This function discovers the address of the other end of the socket
  * and returns it as a string.
  *
- * @return the address as string, or NULL on error.
+ * @return the address as string, or nullptr on error.
  */
 std::string * CS2Net::Socket::GetRemoteAddr()
 {
@@ -603,7 +603,7 @@ std::string * CS2Net::Socket::GetRemoteAddr()
     if(this->state != SOCKETSTATE_CONNECTED && this->state != SOCKETSTATE_SSL)
     {
         ERROR("Cannot retrieve remote address on a non-connected socket!");
-        return NULL;
+        return nullptr;
     }
 
     struct sockaddr a;
@@ -618,7 +618,7 @@ std::string * CS2Net::Socket::GetRemoteAddr()
         _errno = errno;
         ERROR("Error retrieving socket remote name: %s", strerror(errno));
         errno = _errno;
-        return NULL;
+        return nullptr;
     }
 
     host_buf = new char[64];
@@ -631,7 +631,7 @@ std::string * CS2Net::Socket::GetRemoteAddr()
         _errno = errno;
         ERROR("Error looking up host: %s", gai_strerror(err));
         errno = _errno;
-        return NULL;
+        return nullptr;
     }
 
     // Assemble the host/port strings into something readable

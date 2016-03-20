@@ -218,7 +218,7 @@ static void AddLineToBuffer(gpointer userdata)
     gtk_text_buffer_insert(buf, &iter, "\n", -1);
 
     // autoscroll the buffer forward
-    m = gtk_text_buffer_create_mark(buf, NULL, &iter, FALSE);
+    m = gtk_text_buffer_create_mark(buf, nullptr, &iter, FALSE);
     gtk_text_view_scroll_to_mark(textarea, m, 0, FALSE, 0, 0);
     gtk_text_buffer_delete_mark(buf, m);
 }
@@ -266,7 +266,7 @@ static void ShowConnectDialog(GtkWidget * w, gpointer data)
             // and make the close button active
             if(connected)
             {
-                g_idle_add(PollSocket, NULL);
+                g_idle_add(PollSocket, nullptr);
                 gtk_widget_set_sensitive(GTK_WIDGET(toolbar_connect), false);
                 gtk_widget_set_sensitive(GTK_WIDGET(toolbar_close), true);
             }
@@ -328,7 +328,7 @@ int main(int argc, char ** argv)
     gtk_init(&argc, &argv);
 
     int ret;
-    GError * err = NULL;
+    GError * err = nullptr;
 
     gtk_builder = gtk_builder_new();
     ret = gtk_builder_add_from_file(gtk_builder, "./client2.glade", &err);
@@ -341,7 +341,7 @@ int main(int argc, char ** argv)
 
     // connect some basic signals
     // we connect more signals later
-    gtk_builder_connect_signals(gtk_builder, NULL);
+    gtk_builder_connect_signals(gtk_builder, nullptr);
 
     // set up static variables (pointers to UI elements)
 
@@ -365,13 +365,13 @@ int main(int argc, char ** argv)
     // initialise some default values
 
     // connect signals to important UI elements
-    g_signal_connect(chatentry, "activate", G_CALLBACK(ProcessChatLine), NULL);
-    g_signal_connect(toolbar_connect, "clicked", G_CALLBACK(ShowConnectDialog), NULL);
-    g_signal_connect(toolbar_close, "clicked", G_CALLBACK(DisconnectCallback), NULL);
+    g_signal_connect(chatentry, "activate", G_CALLBACK(ProcessChatLine), nullptr);
+    g_signal_connect(toolbar_connect, "clicked", G_CALLBACK(ShowConnectDialog), nullptr);
+    g_signal_connect(toolbar_close, "clicked", G_CALLBACK(DisconnectCallback), nullptr);
 
     // connect signals to one-time UI elements
-    g_signal_connect(quit_button, "clicked", G_CALLBACK(destroy), NULL);
-    g_signal_connect(window, "destroy", G_CALLBACK(destroy), NULL);
+    g_signal_connect(quit_button, "clicked", G_CALLBACK(destroy), nullptr);
+    g_signal_connect(window, "destroy", G_CALLBACK(destroy), nullptr);
 
 
     // NOTE: This is how you populate the status bar with text.
