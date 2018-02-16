@@ -8,7 +8,7 @@ DOCDIR = doc
 CC = g++
 LD = g++
 DOCGEN = doxygen
-CFLAGS =
+CFLAGS = -MD
 CPPFLAGS = -std=c++11 -Wall -pedantic -I$(SRCDIR) `pkg-config --cflags gtk+-2.0` -g
 LDFLAGS = `pkg-config --libs gtk+-2.0`
 DOCGENFLAGS =
@@ -63,7 +63,9 @@ $(OBJDIR)/%.o : $(SRCDIR)/$(notdir %.cpp)
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 clean:
-	rm -f $(addprefix $(BINDIR)/,$(BINS)) $(OBJDIR)/*.o
+	rm -f $(addprefix $(BINDIR)/,$(BINS)) $(OBJDIR)/*.o $(OBJDIR)/*.d
 
 clean-docs:
 	rm -r $(DOCDIR)/*
+
+-include $(OBJDIR)/*.d
