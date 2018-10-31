@@ -100,7 +100,65 @@ static int DoConnect(const char * hostname, uint16_t port, const char * username
     guint ctx = gtk_statusbar_get_context_id(status_bar, "none");
     char status_str[1024];
 
-    /* TODO: Fix this function and make it useful. */
+    CS2Net::Socket sock;
+    // Connect
+    int ret = sock.Connect(&hostname, port);
+    if(ret < 0)
+    {
+    // something terrifying happened x_X
+        if(ret == -1)
+        {
+            ERROR("connect error: %s", strerror(errno));
+        }
+        else if(ret == -3)
+        {
+            ERROR("connect error: %s", gai_strerror(errno));
+        }
+        else
+        {
+            ERROR("this error should never occur");
+        }
+    }
+    else
+    {
+    // we connected yay
+    //send message in specific type
+        std::string msg = EncodeNetworkMessage(MSG_AUTH_USERNAME, &__username);
+        int ret = sock.Send(&msg);
+        if(ret < 0)
+        {
+        // bad stuff happened
+            if(ret == -1)
+            {
+                ERROR("send error: %s", strerror(errno));
+                sock.Disconnect();
+            }
+            else
+            {
+                ERROR("this error should never occur");
+                sock.Disconnect();
+            }
+        }
+        else
+        {
+        // we sent some data yay
+        // Receive message
+            std::string * incoming = sock.Recv(1024, false);
+            if(incoming == NULL)
+            {
+            // bad stuff happened
+                ERROR("recv error: %s", strerror(errno));
+                sock.Disconnect();
+            }
+            else
+            {
+            // we got some data yay
+            // Check if message is MSG_AUTH_Ok
+                if(*incoming == "MSG_AUTH_OK")
+                    connected == true;
+            }
+        }
+    }
 
     snprintf(status_str, 1024, "Connecting not implemented");
     gtk_statusbar_pop(status_bar, ctx);

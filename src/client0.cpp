@@ -44,16 +44,77 @@ int main(int argc, char ** argv)
 {
 
     REQUIRE(argc == 3, "usage: %s hostname port", argv[0]);
-
-    /* TODO: write this code.
-     *
-     * This should be a simple client that connects to the given server,
-     * sends a message of your choice,
-     * recvs and prints the response,
-     * and disconnects.
-     *
-     **/
-
+    CS2Net::Socket sock;
+    std::string hostname(argv[1]);
+    uint16_t port = atoi(argv[2]);
+    // Connect
+    int ret = sock.Connect(&hostname, port);
+    if(ret < 0)
+    {
+    // something terrifying happened x_X
+        if(ret == -1)
+        {
+            ERROR("connect error: %s", strerror(errno));
+        }
+        else if(ret == -3)
+        {
+            ERROR("connect error: %s", gai_strerror(errno));
+        }
+        else
+        {
+        ERROR("this error should never occur");
+        }
+    }
+    else
+    {
+    // we connected yay
+    // Send messages    
+        std::string to_send("Tom Brady is the GOAT, also Hi");
+        int ret = sock.Send(&to_send);
+        if(ret < 0)
+        {
+        // bad stuff happened
+            if(ret == -1)
+            {
+                ERROR("send error: %s", strerror(errno));
+            }
+            else
+            {
+                ERROR("this error should never occur");
+            }
+        }
+        else
+        {
+        // we sent some data yay
+        // Receive message
+            std::string * incoming = sock.Recv(1024, false);
+            if(incoming == NULL)
+            {
+            // bad stuff happened
+                ERROR("recv error: %s", strerror(errno));
+            }
+            else
+            {
+            // we got some data yay
+            // Print message
+                std::cout<< *incoming << std::endl;
+            }
+        }
+    }
+    // Disconnect
+    int ret2 = sock.Disconnect();
+    if(ret2 < 0)
+    {
+    // bad stuff happened
+        if(ret2 == -1)
+        {
+            ERROR("disconnect error: %s", strerror(errno));
+        }
+        else
+        {
+            ERROR("this error should never occur");
+        }
+    }
     return 0;
 
 }

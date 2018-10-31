@@ -50,6 +50,5 @@ either expressed or implied, of the California Institute of Technology.
 #include "error.hpp"
 #include "NetworkWrapper.hpp"
 
-/* TODO: declare any extra classes here */
 
 #endif

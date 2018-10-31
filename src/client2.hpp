@@ -46,7 +46,7 @@ either expressed or implied, of the California Institute of Technology.
 #include <cstring>
 #include <string>
 #include <list>
-
+#include <iostream>
 #include <gtk/gtk.h>
 
 #include "NetworkWrapper.hpp"
@@ -68,8 +68,29 @@ either expressed or implied, of the California Institute of Technology.
  */
 std::string EncodeNetworkMessage(MESSAGE_TYPE type, std::string * payload)
 {
-    // TODO: fix this.
-    return std::string();
+    std::string msg = "";
+    if(type == MSG_SERVER_MESSAGE)
+        msg.append("0x00");
+    else if(type == MSG_AUTH_USERNAME)
+        msg.append("0x10");
+    else if(type == MSG_AUTH_OK)
+        msg.append("0x18");
+    else if(type == MSG_AUTH_ERROR)
+        msg.append("0x19");
+    else if(type == MSG_CHATMSG)
+        msg.append("0x20");
+    else if(type == MSG_USERLIST)
+        msg.append("0x21");
+    else if(type == MSG_GENERAL_ERROR)
+        msg.append("0xFF");
+    else 
+        std::cout<<"I messed up"<<std::endl;
+    unsigned short length = *(unsigned short*) (payload->data()); // this gets length of message according to recitation slides
+    const char * __length_bits;
+    __length_bits = (const char *) (&length);
+    msg.append(__length_bits, sizeof(unsigned short int));  // adds length of message (payload) to msg
+    msg.append(*payload);
+    return msg;
 }
 
 #endif
